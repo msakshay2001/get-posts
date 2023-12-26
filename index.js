@@ -6,26 +6,33 @@ async function getMangaPosts() {
   return new Promise(async (resolve, reject) => {
     try {
       // Launch the browser
+      console.log("🚀 Launching browser...");
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
 
       // Login to reddit
+      console.log("🏠 Opening home page...");
       const loginPage = await page.goto('https://old.reddit.com/login');
       if (!loginPage.ok()) {
         throw new Error('Manga: Loginpage error', e);
       }
+
+      console.log("🖊 Logging in...");
       await page.type('#user_login', process.env.USERNAME);
       await page.type('#passwd_login', process.env.PASSWORD);
       await page.click('form#login-form button[type=submit]');
       await page.waitForNavigation();
 
+      console.log("📄 Logged in & going to subreddit...");
       const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
       if (!mangaPage.ok()) {
         throw new Error('Manga: Manga subreddit page error', e);
       }
+      console.log("📖 Getting the html...");
       const html = await page.content();
       await browser.close();
 
+      console.log("🔃 Loading html to cheerio...");
       const postsJson = [];
       const $ = load(html);
 
@@ -46,9 +53,11 @@ async function getMangaPosts() {
         });
       });
 
+      console.log("✅ Got the data, sending it...");
+      console.log(postsJson)
       resolve(postsJson);
     } catch (e) {
-      console.error('Error', e);
+      console.error('💣 Error', e);
 
       reject(e.message);
     }
