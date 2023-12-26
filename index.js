@@ -66,13 +66,17 @@ async function getMangaPosts() {
 
 http
   .createServer((req, res) => {
-    getMangaPosts()
-      .then((data) => {
-        res.end(JSON.stringify(data));
-      })
-      .catch((err) => {
-        res.end(err);
-      });
+    if (req.headers["content-type"] === "application/json") {
+      getMangaPosts()
+        .then((data) => {
+          res.end(JSON.stringify(data));
+        })
+        .catch((err) => {
+          res.end(err);
+        });
+    } else {
+      res.end("Hello world")
+    }
   })
   .listen(process.env.PORT, () => {
     console.log(`Running on post: ${process.env.PORT}`);
