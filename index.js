@@ -23,7 +23,7 @@ async function getMangaPosts() {
       if (!mangaPage.ok()) {
         throw new Error('Manga: Manga subreddit page error', e);
       }
-      const html = page.content();
+      const html = await page.content();
       await browser.close();
 
       const postsJson = [];
