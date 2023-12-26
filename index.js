@@ -69,10 +69,14 @@ http
     if (req.headers["content-type"] === "application/json") {
       getMangaPosts()
         .then((data) => {
-          res.end(JSON.stringify(data));
+          res.writeHead(200, {"Content-Type": "application/json"});
+          res.write(JSON.stringify(data));
+          res.end();
         })
         .catch((err) => {
-          res.end(err);
+          res.writeHead(500, {"Content-Type": "text/plain"});
+          res.write(err);
+          res.end();
         });
     } else {
       res.end("Hello world")
