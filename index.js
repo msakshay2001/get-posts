@@ -1,4 +1,4 @@
-import { launch } from 'puppeteer';
+import puppeteer from "puppeteer";
 import { load } from 'cheerio';
 import http from 'http';
 
@@ -6,7 +6,7 @@ async function getMangaPosts() {
   return new Promise(async (resolve, reject) => {
     try {
       // Launch the browser
-      const browser = await launch();
+      const browser = await puppeteer.launch();
       const page = await browser.newPage();
 
       // Login to reddit
