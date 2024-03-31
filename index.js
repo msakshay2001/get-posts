@@ -1,12 +1,15 @@
-import puppeteer from "puppeteer";
-import { load } from 'cheerio';
 import http from 'http';
+import { load } from 'cheerio';
+import puppeteer from 'puppeteer-extra';
+
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+puppeteer.use(StealthPlugin());
 
 async function getMangaPosts() {
   return new Promise(async (resolve, reject) => {
     try {
       // Launch the browser
-      console.log("🚀 Launching browser...");
+      console.log('🚀 Launching browser...');
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       await page.setUserAgent(
@@ -18,28 +21,28 @@ async function getMangaPosts() {
       });
 
       // Login to reddit
-      console.log("🏠 Opening home page...");
+      console.log('🏠 Opening home page...');
       const loginPage = await page.goto('https://old.reddit.com/login');
       if (!loginPage.ok()) {
         throw new Error('Manga: Loginpage error', e);
       }
 
-      console.log("🖊 Logging in...");
+      console.log('🖊 Logging in...');
       await page.type('#user_login', process.env.USERNAME);
       await page.type('#passwd_login', process.env.PASSWORD);
       await page.click('form#login-form button[type=submit]');
       await page.waitForNavigation();
 
-      console.log("📄 Logged in & going to subreddit...");
+      console.log('📄 Logged in & going to subreddit...');
       const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
       if (!mangaPage.ok()) {
         throw new Error('Manga: Manga subreddit page error', e);
       }
-      console.log("📖 Getting the html...");
+      console.log('📖 Getting the html...');
       const html = await page.content();
       await browser.close();
 
-      console.log("🔃 Loading html to cheerio...");
+      console.log('🔃 Loading html to cheerio...');
       const postsJson = [];
       const $ = load(html);
 
@@ -60,8 +63,8 @@ async function getMangaPosts() {
         });
       });
 
-      console.log("✅ Got the data, sending it...");
-      console.log(postsJson)
+      console.log('✅ Got the data, sending it...');
+      console.log(postsJson);
       resolve(postsJson);
     } catch (e) {
       console.error('💣 Error', e);
@@ -73,20 +76,20 @@ async function getMangaPosts() {
 
 http
   .createServer((req, res) => {
-    if (req.headers["content-type"] === "application/json") {
+    if (req.headers['content-type'] === 'application/json') {
       getMangaPosts()
         .then((data) => {
-          res.writeHead(200, {"Content-Type": "application/json"});
+          res.writeHead(200, { 'Content-Type': 'application/json' });
           res.write(JSON.stringify(data));
           res.end();
         })
         .catch((err) => {
-          res.writeHead(500, {"Content-Type": "text/plain"});
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
           res.write(err);
           res.end();
         });
     } else {
-      res.end("Hello world")
+      res.end('Hello world');
     }
   })
   .listen(process.env.PORT, () => {
