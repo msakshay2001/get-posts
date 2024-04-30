@@ -33,7 +33,7 @@ async function getMangaPosts() {
       await page.type('#login-password', process.env.PASSWORD);
       await page.keyboard.press('Enter');
       console.log('🖊 Entered credentials, logging in...');
-      await page.waitForSelector('#left-sidebar');
+      await page.waitForSelector('[aria-live="polite"]');
 
       console.log('📄 Logged in & going to subreddit...');
       const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
