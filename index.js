@@ -22,15 +22,16 @@ async function getMangaPosts() {
 
       // Login to reddit
       console.log('🏠 Opening home page...');
-      const loginPage = await page.goto('https://old.reddit.com/');
+      const loginPage = await page.goto('https://old.reddit.com/login');
       if (!loginPage.ok()) {
         throw new Error('Manga: Login page error: ' + loginPage.status());
       }
+      await page.waitForSelector('#login-username');
 
       console.log('🖊 Logging in...');
-      await page.type('.login-form input[name="user"]', process.env.USERNAME);
-      await page.type('.login-form input[name="passwd"]', process.env.PASSWORD);
-      await page.click('.login-form button[type=submit]');
+      await page.type('#login-username', process.env.USERNAME);
+      await page.type('#login-password', process.env.PASSWORD);
+      await page.keyboard.press('Enter');
       await page.waitForNavigation();
 
       console.log('📄 Logged in & going to subreddit...');
