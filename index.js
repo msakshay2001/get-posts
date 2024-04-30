@@ -24,7 +24,7 @@ async function getMangaPosts() {
       console.log('🏠 Opening home page...');
       const loginPage = await page.goto('https://old.reddit.com/');
       if (!loginPage.ok()) {
-        throw new Error('Manga: Loginpage error', e);
+        throw new Error('Manga: Login page error', loginPage.status());
       }
 
       console.log('🖊 Logging in...');
@@ -36,7 +36,7 @@ async function getMangaPosts() {
       console.log('📄 Logged in & going to subreddit...');
       const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
       if (!mangaPage.ok()) {
-        throw new Error('Manga: Manga subreddit page error', e);
+        throw new Error('Manga: Manga subreddit page error', mangaPage.status());
       }
       console.log('📖 Getting the html...');
       const html = await page.content();
