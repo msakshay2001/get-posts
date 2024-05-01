@@ -15,25 +15,25 @@ async function getMangaPosts() {
 
       // Login to reddit
       console.log('🏠 Opening home page...');
-      const loginPage = await page.goto('https://www.reddit.com/r/manga/new.json');
+      const loginPage = await page.goto('https://old.reddit.com/login');
       if (!loginPage.ok()) {
-        throw new Error(await page.content());
+        throw new Error('Manga: Login page error: ' + loginPage.status());
       }
-      // await page.waitForSelector('#login-username');
+      await page.waitForSelector('#login-username');
 
-      // console.log('🖊 Entering credentials...');
-      // await page.type('#login-username', process.env.USERNAME);
-      // await page.type('#login-password', process.env.PASSWORD);
-      // await page.keyboard.press('Enter');
-      // console.log('🖊 Entered credentials, logging in...');
-      // await page.waitForSelector('[aria-live="polite"]');
+      console.log('🖊 Entering credentials...');
+      await page.type('#login-username', process.env.USERNAME);
+      await page.type('#login-password', process.env.PASSWORD);
+      await page.keyboard.press('Enter');
+      console.log('🖊 Entered credentials, logging in...');
+      await page.waitForSelector('[aria-live="polite"]');
 
-      // console.log('📄 Logged in & going to subreddit...');
-      // const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
-      // if (!mangaPage.ok()) {
-      //   const error = await page.content();
-      //   throw new Error(error);
-      // }
+      console.log('📄 Logged in & going to subreddit...');
+      const mangaPage = await page.goto('https://www.reddit.com/r/manga/new.json');
+      if (!mangaPage.ok()) {
+        const error = await page.content();
+        throw new Error(error);
+      }
       // console.log('📖 Getting the html...');
       // const html = await page.content();
       // await browser.close();
