@@ -40,6 +40,10 @@ def upvote_post(postId):
     reddit.submission(postId).upvote()
 
 
+def downvote_post(postId):
+    reddit.submission(postId).downvote()
+
+
 if __name__ == "__main__":
     print("Fetching latest posts...")
     pprint(get_latest_posts())
