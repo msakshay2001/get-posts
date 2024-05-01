@@ -37,10 +37,38 @@ def get_latest_posts():
 
 
 def upvote_post(postId):
+
+    username = os.getenv("PERSONAL_USERNAME")
+    password = os.getenv("PERSONAL_PASSWORD")
+    client_id = os.getenv("PERSONAL_CLIENT_ID")
+    client_secret = os.getenv("PERSONAL_CLIENT_SECRET")
+
+    reddit = praw.Reddit(
+        client_id=client_id,
+        client_secret=client_secret,
+        username=username,
+        password=password,
+        user_agent=f"render:{client_id}:v1 (by /u/{username})",
+    )
+
     reddit.submission(postId).upvote()
 
 
 def downvote_post(postId):
+
+    username = os.getenv("PERSONAL_USERNAME")
+    password = os.getenv("PERSONAL_PASSWORD")
+    client_id = os.getenv("PERSONAL_CLIENT_ID")
+    client_secret = os.getenv("PERSONAL_CLIENT_SECRET")
+
+    reddit = praw.Reddit(
+        client_id=client_id,
+        client_secret=client_secret,
+        username=username,
+        password=password,
+        user_agent=f"render:{client_id}:v1 (by /u/{username})",
+    )
+
     reddit.submission(postId).downvote()
 
 
