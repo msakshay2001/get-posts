@@ -33,6 +33,8 @@ def get_latest_posts():
 
         posts.append(post)
 
+    print("✅✅ Latest posts:")
+    pprint(posts)
     return posts
 
 
