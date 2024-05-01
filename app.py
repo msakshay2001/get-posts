@@ -33,3 +33,17 @@ def upvote(postId):
             status_code=500,
             detail=f"Couldn't upvote post: {traceback.format_exception_only(type(e), e)}",
         )
+
+
+@app.get("/downvote/{postId}")
+def downvote(postId):
+    try:
+        prawmanga.downvote_post(postId)
+        return {"message": "Post downvoted"}
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Couldn't downvote post: {postId}: {traceback.format_exception_only(type(e), e)}",
+        )
+
