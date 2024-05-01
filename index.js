@@ -12,13 +12,6 @@ async function getMangaPosts() {
       console.log('🚀 Launching browser...');
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
-      await page.setUserAgent(
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
-          '(KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
-      );
-      await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9',
-      });
 
       // Login to reddit
       console.log('🏠 Opening home page...');
@@ -38,7 +31,8 @@ async function getMangaPosts() {
       console.log('📄 Logged in & going to subreddit...');
       const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
       if (!mangaPage.ok()) {
-        throw new Error('Manga: Manga subreddit page error: ' + mangaPage.status());
+        const error = await page.content();
+        throw new Error(error);
       }
       console.log('📖 Getting the html...');
       const html = await page.content();
