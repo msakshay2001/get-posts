@@ -4,6 +4,9 @@ from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
+@app.head("/")
+def read_root_head():
+    return {"message": "Hello World"}
 
 @app.get("/")
 def root():
