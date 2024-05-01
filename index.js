@@ -15,53 +15,53 @@ async function getMangaPosts() {
 
       // Login to reddit
       console.log('🏠 Opening home page...');
-      const loginPage = await page.goto('https://old.reddit.com/login');
+      const loginPage = await page.goto('https://www.reddit.com/r/manga/new.json');
       if (!loginPage.ok()) {
-        throw new Error('Manga: Login page error: ' + loginPage.status());
+        throw new Error(await page.content());
       }
-      await page.waitForSelector('#login-username');
+      // await page.waitForSelector('#login-username');
 
-      console.log('🖊 Entering credentials...');
-      await page.type('#login-username', process.env.USERNAME);
-      await page.type('#login-password', process.env.PASSWORD);
-      await page.keyboard.press('Enter');
-      console.log('🖊 Entered credentials, logging in...');
-      await page.waitForSelector('[aria-live="polite"]');
+      // console.log('🖊 Entering credentials...');
+      // await page.type('#login-username', process.env.USERNAME);
+      // await page.type('#login-password', process.env.PASSWORD);
+      // await page.keyboard.press('Enter');
+      // console.log('🖊 Entered credentials, logging in...');
+      // await page.waitForSelector('[aria-live="polite"]');
 
-      console.log('📄 Logged in & going to subreddit...');
-      const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
-      if (!mangaPage.ok()) {
-        const error = await page.content();
-        throw new Error(error);
-      }
-      console.log('📖 Getting the html...');
-      const html = await page.content();
-      await browser.close();
+      // console.log('📄 Logged in & going to subreddit...');
+      // const mangaPage = await page.goto('https://old.reddit.com/r/manga/new/');
+      // if (!mangaPage.ok()) {
+      //   const error = await page.content();
+      //   throw new Error(error);
+      // }
+      // console.log('📖 Getting the html...');
+      // const html = await page.content();
+      // await browser.close();
 
-      console.log('🔃 Loading html to cheerio...');
-      const postsJson = [];
-      const $ = load(html);
+      // console.log('🔃 Loading html to cheerio...');
+      // const postsJson = [];
+      // const $ = load(html);
 
-      const postsContainer = $('#siteTable');
+      // const postsContainer = $('#siteTable');
 
-      const posts = postsContainer.find('[data-subreddit-prefixed=r/manga]');
-      posts.each(function (i, post) {
-        postsJson.push({
-          data: {
-            title: $(this).find('[data-event-action=title]').text().trim(),
-            url:
-              post.attribs['data-url'] === post.attribs['data-permalink']
-                ? `https://reddit.com${post.attribs['data-url']}`
-                : post.attribs['data-url'],
-            permalink: post.attribs['data-permalink'],
-            created: post.attribs['data-timestamp'] / 1000,
-          },
-        });
-      });
+      // const posts = postsContainer.find('[data-subreddit-prefixed=r/manga]');
+      // posts.each(function (i, post) {
+      //   postsJson.push({
+      //     data: {
+      //       title: $(this).find('[data-event-action=title]').text().trim(),
+      //       url:
+      //         post.attribs['data-url'] === post.attribs['data-permalink']
+      //           ? `https://reddit.com${post.attribs['data-url']}`
+      //           : post.attribs['data-url'],
+      //       permalink: post.attribs['data-permalink'],
+      //       created: post.attribs['data-timestamp'] / 1000,
+      //     },
+      //   });
+      // });
 
-      console.log('✅ Got the data, sending it...');
-      console.log(postsJson);
-      resolve(postsJson);
+      // console.log('✅ Got the data, sending it...');
+      // console.log(postsJson);
+      resolve(await page.content());
     } catch (e) {
       console.error('💣 Error', e);
 
