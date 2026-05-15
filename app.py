@@ -25,6 +25,18 @@ def latestposts():
         )
 
 
+@app.get("/latest-giveaway-posts")
+def latestposts():
+    try:
+        return prawmanga.get_latest_giveaway_posts()
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Couldn't get latest posts: {traceback.format_exception_only(type(e), e)}",
+        )
+
+
 @app.get("/upvote/{postId}")
 def upvote(postId):
     try:
