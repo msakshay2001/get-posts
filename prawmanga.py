@@ -53,7 +53,7 @@ def get_latest_giveaway_posts():
             }
     
             posts.append(post)
-        time.sleep(2.5)
+        time.sleep(0.8)
 
     print("✅✅ Latest giveaway posts:")
     pprint(len(posts))
