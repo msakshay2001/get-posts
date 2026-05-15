@@ -2,6 +2,8 @@ import praw
 import os
 from dotenv import load_dotenv
 from pprint import pprint
+import json
+import time
 
 load_dotenv()
 
@@ -37,6 +39,25 @@ def get_latest_posts():
     pprint(posts)
     return posts
 
+def get_latest_giveaway_posts():
+    posts = []
+    for subreddit in json.loads(os.getenv("SUB_NAMES")):
+        for submission in reddit.subreddit(subreddit).new(limit=25):
+            post = {
+                "data": {
+                    "title": submission.title,
+                    "url": submission.url,
+                    "permalink": submission.permalink,
+                    "created": int(submission.created),
+                }
+            }
+    
+            posts.append(post)
+            time.sleep(2.5)
+
+    print("✅✅ Latest giveaway posts:")
+    pprint(posts)
+    return posts
 
 def upvote_post(postId):
 
