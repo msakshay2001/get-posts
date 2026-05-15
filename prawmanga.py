@@ -56,7 +56,7 @@ def get_latest_giveaway_posts():
             time.sleep(2.5)
 
     print("✅✅ Latest giveaway posts:")
-    pprint(posts)
+    pprint(len(posts))
     return posts
 
 def upvote_post(postId):
