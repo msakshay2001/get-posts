@@ -41,7 +41,9 @@ def get_latest_posts():
 
 def get_latest_giveaway_posts():
     posts = []
-    for subreddit in json.loads(os.getenv("SUB_NAMES")):
+    subreddits = json.loads(os.getenv("SUB_NAMES"))
+    print(f"Fetching from {len(subreddits)} subreddits...")
+    for i, subreddit in enumerate(subreddits):
         for submission in reddit.subreddit(subreddit).new(limit=25):
             post = {
                 "data": {
@@ -53,7 +55,8 @@ def get_latest_giveaway_posts():
             }
     
             posts.append(post)
-        time.sleep(0.8)
+        if i < len(subreddits) - 1:
+            time.sleep(0.3)   # or even remove it completely
 
     print("✅✅ Latest giveaway posts:")
     pprint(len(posts))
