@@ -56,7 +56,7 @@ def get_latest_giveaway_posts():
     
             posts.append(post)
         if i < len(subreddits) - 1:
-            time.sleep(0.3)   # or even remove it completely
+            time.sleep(0.1)   # or even remove it completely
 
     print("✅✅ Latest giveaway posts:")
     pprint(len(posts))
