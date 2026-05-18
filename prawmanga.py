@@ -51,6 +51,7 @@ def get_latest_giveaway_posts():
                     "url": submission.url,
                     "permalink": submission.permalink,
                     "created": int(submission.created),
+                    "subreddit": subreddit
                 }
             }
     
